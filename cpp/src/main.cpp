@@ -5,7 +5,7 @@
 // Login   <baron_a@epitech.net>
 //
 // Started on  Fri Jan 11 21:55:34 2013 Alexandre Baron
-// Last update Sat Jan 12 18:12:21 2013 Alexandre Baron
+// Last update Sat Jan 12 19:47:15 2013 Alexandre Baron
 //
 
 #include <iostream>
@@ -21,7 +21,7 @@ int	main(int argc, char **argv)
   Pokemon ramoloss;
   PokeView view;
 
-  view.initialize(800, 600, "Pokédex", "/home/baron_a/Projects/pokemon/resources/Pokedex.png");
+  view.initialize(800, 600, "Light Pokedex", "/home/baron_a/Projects/pokemon/resources/Pokedex_eteint.png");
   view.show();
   return app_.exec();
 }

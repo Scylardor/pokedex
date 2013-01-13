@@ -5,7 +5,7 @@
 // Login   <baron_a@epitech.net>
 //
 // Started on  Sat Jan 12 16:14:55 2013 Alexandre Baron
-// Last update Sat Jan 12 18:10:40 2013 Alexandre Baron
+// Last update Sat Jan 12 18:20:47 2013 Alexandre Baron
 //
 
 #include "QtWindow.hh"
@@ -17,10 +17,6 @@ PokeView::PokeView()
   if (!this->window_)
     {
       // Throw exception
-    }
-  else
-    {
-
     }
 }
 

@@ -5,7 +5,7 @@
 // Login   <baron_a@epitech.net>
 //
 // Started on  Sat Jan 12 16:13:04 2013 Alexandre Baron
-// Last update Sat Jan 12 18:10:22 2013 Alexandre Baron
+// Last update Sun Jan 13 00:58:05 2013 Alexandre Baron
 //
 
 #ifndef	QTWINDOW_HH_
@@ -14,15 +14,32 @@
 // Standard Includes
 # include <string>
 // Libraries Includes
-# include <QApplication>
+//# include <QtGui>
 # include <QMainWindow>
+# include <QPushButton>
 
 // Project Includes
 # include "IWindow.hh"
 
-class	QtWindow : public IWindow
+class	onOffButton : public QPushButton
 {
+  Q_OBJECT
+
+  bool on_;
+
+public:
+  onOffButton(QWidget *parent = 0);
+
+};
+
+
+class	QtWindow : public QWidget, public IWindow
+{
+  Q_OBJECT
+
   QMainWindow	window_;
+  QPushButton	onOffButton_;
+  bool		activated_;
 
 public:
   QtWindow();
@@ -33,6 +50,12 @@ public:
   virtual void	setTitle(std::string);
   virtual void	setBackgroundImage(std::string name);
   virtual void	show();
+
+  void	createRoundButton(QPushButton &, int, int, int, int);
+
+public slots:
+  void	slotToggleOnOff();
+
 };
 
 #endif
