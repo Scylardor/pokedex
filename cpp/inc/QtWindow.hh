@@ -5,7 +5,7 @@
 // Login   <baron_a@epitech.net>
 //
 // Started on  Sat Jan 19 21:54:06 2013 Alexandre Baron
-// Last update Sun Jan 20 06:06:34 2013 Alexandre Baron
+// Last update Sun Jan 20 20:17:29 2013 Alexandre Baron
 //
 
 #ifndef	QTWINDOW_HH_
@@ -24,6 +24,9 @@ class	QtWindow : public QMainWindow
   // Widgets and objects of all kinds
   QPushButton	*onOffButton_;
   QWidget	*homeMenu_;
+  QWidget	*pokemonList_;
+  QWidget	*pokemonArena_;
+  QListWidget	*pokemons_;
 
   // Window class properties
   QFont		pokeFont_;
@@ -42,8 +45,11 @@ public:
   void	createHomeMenu();
   void	hideEverything();
 
+
 private slots:
   void	toggleOnOff();
+  void	manageButtonClicks(int);
+
 // protected:
 //   void closeEvent(QCloseEvent *event);
 
