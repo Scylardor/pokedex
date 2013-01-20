@@ -5,7 +5,7 @@
 // Login   <baron_a@epitech.net>
 //
 // Started on  Sat Jan 19 21:54:06 2013 Alexandre Baron
-// Last update Sun Jan 20 04:18:21 2013 Alexandre Baron
+// Last update Sun Jan 20 06:06:34 2013 Alexandre Baron
 //
 
 #ifndef	QTWINDOW_HH_
@@ -21,9 +21,13 @@ class	QtWindow : public QMainWindow
 {
   Q_OBJECT
 
+  // Widgets and objects of all kinds
   QPushButton	*onOffButton_;
   QWidget	*homeMenu_;
-  bool	OnOff_;
+
+  // Window class properties
+  QFont		pokeFont_;
+  bool		OnOff_;
 
 public:
   QtWindow();
@@ -34,7 +38,9 @@ public:
   void	blockResize(size_t width, size_t height);
   void	makeButtonTransparent(QPushButton *);
 
+  void	initializePokeFont();
   void	createHomeMenu();
+  void	hideEverything();
 
 private slots:
   void	toggleOnOff();
