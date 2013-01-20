@@ -1,80 +1,74 @@
 //
-// QtWindow.cpp for pokemon in /home/baron_a/Projects/pokemon/cpp
+// QtWindow.cpp for pokedex in /home/baron_a/Projects/pokemon/cpp
 //
 // Made by Alexandre Baron
 // Login   <baron_a@epitech.net>
 //
-// Started on  Sat Jan 12 16:22:35 2013 Alexandre Baron
-// Last update Sun Jan 13 14:51:28 2013 Alexandre Baron
+// Started on  Sat Jan 19 22:20:14 2013 Alexandre Baron
+// Last update Sun Jan 20 01:11:52 2013 Alexandre Baron
 //
 
+#include <sstream>
 #include <iostream>
-#include <QApplication>
-#include <QString>
 
 #include "QtWindow.hh"
 
 QtWindow::QtWindow()
-  : window_(), onOffButton_(&window_)
+  : QMainWindow()
 {
+  this->initialize();
 }
 
-void	QtWindow::initialize(unsigned int x, unsigned int y, std::string title, std::string backgroundImg)
+void	QtWindow::toggleOnOff()
 {
-  this->activated_ = false; // le Pokedex commence eteint
-  this->window_.resize(x, y);
-  if (title != "")
-    this->setTitle(title);
-  this->onOffButton_.setStyleSheet("QWidget {background-color: rgba(255, 0, 0, 0%); background-image: url(/home/baron_a/Projects/pokemon/resources/boutonON.png); }");
-  this->onOffButton_.resize(40, 39); // resize to the correct size
-  this->onOffButton_.move(57, 495); // move to the correct place
-  this->onOffButton_.setFlat(true); // to have the little "push" animation
-  this->onOffButton_.setFocusPolicy(Qt::NoFocus); // to remove border
+  std::cout << "coucou!" << std::endl;
 
-  this->createRoundButton(this->onOffButton_, 0, 0, 34, 34);
-
-  if (backgroundImg != "")
-    this->setBackgroundImage(backgroundImg);
-
-  QObject::connect(&(this->onOffButton_), SIGNAL(clicked()), this, SLOT(slotToggleOnOff()));
+  this->setBackgroundImage(this->OnOff_ ? POKEDEX_OFF_IMG : POKEDEX_ON_IMG);
+  this->OnOff_ = !this->OnOff_;
 }
 
-void	QtWindow::createRoundButton(QPushButton &button, int x, int y, int width, int height)
-{
-  QRect *rect = new QRect(x, y, width, height);
-  QRegion* region = new QRegion(*rect, QRegion::Ellipse);
-
-  button.setMask(*region);
+void	QtWindow::makeButtonTransparent(QPushButton *button) {
+  button->setFocusPolicy(Qt::NoFocus);
+  button->setFlat(true);
 }
 
-void	QtWindow::setBackgroundImage(std::string name)
+void	QtWindow::initialize()
 {
-  std::string backgroundImg("QWidget {background-image: url(");
+  std::stringstream	styleStream;
 
-  backgroundImg += name + ") }";
-  this->window_.setStyleSheet(QString(backgroundImg.c_str()));
+  this->OnOff_ = false;
+
+  this->onOffButton_ = new QPushButton("ON", this);
+
+  this->onOffButton_->setGeometry(84, 440, 129, 64);
+  this->makeButtonTransparent(this->onOffButton_);
+  styleStream << "background-image: url("<< ON_BUTTON_IMG << ");";
+  this->onOffButton_->setStyleSheet(styleStream.str().c_str());
+  connect(this->onOffButton_, SIGNAL(clicked()), this, SLOT(toggleOnOff()));
 }
 
-void	QtWindow::setTitle(std::string title)
+void	QtWindow::setBackgroundImage(const char *filename)
 {
-  this->window_.setWindowTitle(QObject::tr(title.c_str()));
+  QPalette	palette;
+  QPixmap	pixmap(filename);
+  QBrush	brush(pixmap);
+
+  palette.setBrush(QPalette::Background, brush);
+  setPalette(palette);
+
+  // QWidget *centralWidget = new QWidget(this);
+  // QGridLayout *layout = new QGridLayout();
+
+  // centralWidget->setLayout(layout);
+
+  // layout->addWidget(new QPushButton("Button  1"),0,0);
+  // layout->addWidget(new QPushButton("Button  2"),0,1);
+  // layout->addWidget(new QPushButton("Button  3"),0,2);
+
+  // setCentralWidget(centralWidget);
 }
 
-void	QtWindow::show()
+void	QtWindow::blockResize(size_t width, size_t height)
 {
-  this->window_.show();
-}
-
-
-void	QtWindow::slotToggleOnOff()
-{
-  this->activated_ = !this->activated_;
-  if (this->activated_)
-    {
-      this->setBackgroundImage("/home/baron_a/Projects/pokemon/resources/Pokedex_allume.png");
-    }
-  else
-    {
-      this->setBackgroundImage("/home/baron_a/Projects/pokemon/resources/Pokedex_eteint.png");
-    }
+  setFixedSize(width, height);
 }
