@@ -5,7 +5,7 @@
 // Login   <baron_a@epitech.net>
 //
 // Started on  Sat Jan 19 21:54:06 2013 Alexandre Baron
-// Last update Sun Jan 20 01:10:40 2013 Alexandre Baron
+// Last update Sun Jan 20 04:18:21 2013 Alexandre Baron
 //
 
 #ifndef	QTWINDOW_HH_
@@ -13,15 +13,16 @@
 
 # include <QtGui>
 
-# define	POKEDEX_OFF_IMG	"/home/baron_a/Projects/pokemon/resources/Pokedex_eteint.png"
-# define	POKEDEX_ON_IMG	"/home/baron_a/Projects/pokemon/resources/Pokedex_allume.png"
-# define	ON_BUTTON_IMG	"/home/baron_a/Projects/pokemon/resources/boutonON.png"
+# define	POKEDEX_OFF_IMG	"/home/baron_a/Projects/pokemon/resources/Images/PokedexOff.png"
+# define	POKEDEX_ON_IMG	"/home/baron_a/Projects/pokemon/resources/Images/PokedexOn.png"
+# define	ON_BUTTON_IMG	"/home/baron_a/Projects/pokemon/resources/Images/boutonON.png"
 
 class	QtWindow : public QMainWindow
 {
   Q_OBJECT
 
   QPushButton	*onOffButton_;
+  QWidget	*homeMenu_;
   bool	OnOff_;
 
 public:
@@ -32,6 +33,8 @@ public:
   void	setBackgroundImage(const char *filename);
   void	blockResize(size_t width, size_t height);
   void	makeButtonTransparent(QPushButton *);
+
+  void	createHomeMenu();
 
 private slots:
   void	toggleOnOff();
