@@ -5,13 +5,15 @@
 // Login   <baron_a@epitech.net>
 //
 // Started on  Sat Jan 19 21:54:06 2013 Alexandre Baron
-// Last update Sun Jan 20 20:17:29 2013 Alexandre Baron
+// Last update Tue Jan 22 00:11:33 2013 Alexandre Baron
 //
 
 #ifndef	QTWINDOW_HH_
 # define QTWINDOW_HH_
 
 # include <QtGui>
+
+#include "PokeDatabase.hh"
 
 # define	POKEDEX_OFF_IMG	"/home/baron_a/Projects/pokemon/resources/Images/PokedexOff.png"
 # define	POKEDEX_ON_IMG	"/home/baron_a/Projects/pokemon/resources/Images/PokedexOn.png"
@@ -24,26 +26,33 @@ class	QtWindow : public QMainWindow
   // Widgets and objects of all kinds
   QPushButton	*onOffButton_;
   QWidget	*homeMenu_;
-  QWidget	*pokemonList_;
+  QWidget	*pokemonSearchForm_;
   QWidget	*pokemonArena_;
-  QListWidget	*pokemons_;
+  QListWidget	*pokemonList_;
+
+  PokeDatabase	*database_;
 
   // Window class properties
   QFont		pokeFont_;
   bool		OnOff_;
+  bool		criticalError_;
 
 public:
   QtWindow();
   ~QtWindow() {}
 
-  void	initialize();
   void	setBackgroundImage(const char *filename);
   void	blockResize(size_t width, size_t height);
   void	makeButtonTransparent(QPushButton *);
 
+  void	initialize();
   void	initializePokeFont();
-  void	createHomeMenu();
+  void	initializeHomeMenu();
+  void	initializeDatabase();
+
   void	hideEverything();
+
+  bool	getCriticalError() const { return this->criticalError_; }
 
 
 private slots:

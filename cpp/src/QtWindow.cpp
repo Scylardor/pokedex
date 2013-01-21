@@ -5,7 +5,7 @@
 // Login   <baron_a@epitech.net>
 //
 // Started on  Sat Jan 19 22:20:14 2013 Alexandre Baron
-// Last update Sun Jan 20 20:30:36 2013 Alexandre Baron
+// Last update Tue Jan 22 00:10:36 2013 Alexandre Baron
 //
 
 #include <sstream>
@@ -28,15 +28,15 @@ void	QtWindow::manageButtonClicks(int buttonID)
   this->homeMenu_->setVisible(false);
   if (buttonID == 0)
     {
-      //      this->pokemonList_->setVisible(true);
+      //      this->searchPokemonForm_->setVisible(true);
     }
   else if (buttonID == 1)
     {
-      //      this->pokemonArena_->setVisible(true);
+      this->pokemonList_->setVisible(true);
     }
   else
     {
-      this->pokemonList_->setVisible(true);
+      //      this->pokemonArena_->setVisible(true);
     }
   std::cout << "Button " << buttonID << " has been clicked" << std::endl;
 
@@ -48,6 +48,7 @@ void	QtWindow::hideEverything()
   this->homeMenu_->setVisible(false);
   this->pokemonList_->setVisible(false);
   this->pokemonArena_->setVisible(false);
+  this->pokemonSearchForm_->setVisible(false);
 }
 
 void	QtWindow::toggleOnOff()
@@ -70,7 +71,21 @@ void	QtWindow::makeButtonTransparent(QPushButton *button) {
   button->setFlat(true);
 }
 
-void	QtWindow::createHomeMenu()
+void	QtWindow::initializeDatabase()
+{
+  this->database_ = new PokeDatabase();
+  if (this->database_->parseSkillsFile() < 0 || this->database_->parsePokemonsFile() < 0)
+    {
+      this->criticalError_ = true;
+    }
+  else {
+    std::cout << "OOK" << std::endl;
+  }
+
+
+}
+
+void	QtWindow::initializeHomeMenu()
 {
   QButtonGroup	*group;
   QPushButton	*searchPokemonButton;
@@ -128,13 +143,13 @@ void	QtWindow::initializePokeFont()
 	  this->pokeFont_.setFamily(this->pokeFont_.defaultFamily());
 	}
     }
-
 }
 
 void	QtWindow::initialize()
 {
   std::stringstream	styleStream;
 
+  this->criticalError_ = false;
   this->setWindowTitle("Light Pokedex");
   this->OnOff_ = false;
   this->initializePokeFont();
@@ -146,10 +161,22 @@ void	QtWindow::initialize()
   this->onOffButton_->setStyleSheet(styleStream.str().c_str());
   connect(this->onOffButton_, SIGNAL(clicked()), this, SLOT(toggleOnOff()));
 
-  this->createHomeMenu();
+  this->initializeHomeMenu();
+  this->initializeDatabase();
 
-  this->pokemonList_ = new QWidget(this);
+  this->pokemonList_ = new QListWidget(this);
+  this->pokemonList_->setFont(this->pokeFont_);
+  this->pokemonList_->setGeometry(72, 170, 225, 138);
+  this->pokemonList_->setStyleSheet("border: none;");
+  for (int i = 0; i < 10 ; i++) {
+    QListWidgetItem	*prouet = new QListWidgetItem(QObject::tr("wesh"), this->pokemonList_);
+  }
+  this->pokemonList_->setCurrentRow(9);
+
   this->pokemonArena_ = new QWidget(this);
+  this->pokemonSearchForm_ = new QWidget(this);
+
+
   this->hideEverything();
 }
 

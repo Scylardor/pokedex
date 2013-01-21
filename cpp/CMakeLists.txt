@@ -2,7 +2,7 @@ PROJECT(pokedex)
 
 # Requirements part
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
-FIND_PACKAGE(Qt4 REQUIRED)
+FIND_PACKAGE(Qt4 COMPONENTS QtXml QtGui REQUIRED)
 
 # Defining some useful variables here
 FILE(GLOB PROJECT_SRCS "src/*.cpp")
