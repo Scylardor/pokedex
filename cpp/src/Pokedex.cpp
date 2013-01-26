@@ -5,14 +5,13 @@
 // Login   <baron_a@epitech.net>
 //
 // Started on  Sat Jan 19 21:57:25 2013 Alexandre Baron
-// Last update Sat Jan 19 22:41:58 2013 Alexandre Baron
+// Last update Sat Jan 26 01:28:07 2013 Alexandre Baron
 //
 
 #include "Pokedex.hh"
 
 Pokedex::Pokedex()
 {
-
 }
 
 void	Pokedex::initialize(size_t width, size_t height)

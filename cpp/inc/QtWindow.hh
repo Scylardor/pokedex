@@ -5,7 +5,7 @@
 // Login   <baron_a@epitech.net>
 //
 // Started on  Sat Jan 19 21:54:06 2013 Alexandre Baron
-// Last update Tue Jan 22 00:11:33 2013 Alexandre Baron
+// Last update Sat Jan 26 02:34:18 2013 Alexandre Baron
 //
 
 #ifndef	QTWINDOW_HH_
@@ -43,64 +43,23 @@ public:
 
   void	setBackgroundImage(const char *filename);
   void	blockResize(size_t width, size_t height);
+  bool	getCriticalError() const { return this->criticalError_; }
+
+private:
   void	makeButtonTransparent(QPushButton *);
 
   void	initialize();
   void	initializePokeFont();
   void	initializeHomeMenu();
   void	initializeDatabase();
+  void	initializePkmnList();
 
   void	hideEverything();
-
-  bool	getCriticalError() const { return this->criticalError_; }
-
+  void	displayPokemonsList();
 
 private slots:
   void	toggleOnOff();
   void	manageButtonClicks(int);
-
-// protected:
-//   void closeEvent(QCloseEvent *event);
-
-// private slots:
-//   void newFile();
-//   void open();
-//   bool save();
-//   bool saveAs();
-//   void about();
-//   void documentWasModified();
-
-// private:
-//   void createActions();
-//   void createMenus();
-//   void createToolBars();
-//   void createStatusBar();
-//   void readSettings();
-//   void writeSettings();
-//   bool maybeSave();
-//   void loadFile(const QString &fileName);
-//   bool saveFile(const QString &fileName);
-//   void setCurrentFile(const QString &fileName);
-//   QString strippedName(const QString &fullFileName);
-
-//   QPlainTextEdit *textEdit;
-//   QString curFile;
-
-//   QMenu *fileMenu;
-//   QMenu *editMenu;
-//   QMenu *helpMenu;
-//   QToolBar *fileToolBar;
-//   QToolBar *editToolBar;
-//   QAction *newAct;
-//   QAction *openAct;
-//   QAction *saveAct;
-//   QAction *saveAsAct;
-//   QAction *exitAct;
-//   QAction *cutAct;
-//   QAction *copyAct;
-//   QAction *pasteAct;
-//   QAction *aboutAct;
-//   QAction *aboutQtAct;
 };
 
 #endif

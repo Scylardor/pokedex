@@ -5,12 +5,12 @@
 // Login   <baron_a@epitech.net>
 //
 // Started on  Mon Jan 21 21:26:09 2013 Alexandre Baron
-// Last update Mon Jan 21 22:04:18 2013 Alexandre Baron
+// Last update Wed Jan 23 23:25:27 2013 Alexandre Baron
 //
 
 #include "Pokemon.hh"
 
-void	Pokemon::setRatios(float male, float female)
+void	Pokemon::setRatios(const QString & male, const QString & female)
 {
   this->ratios_[0] = male;
   this->ratios_[1] = female;
@@ -22,7 +22,7 @@ void	Pokemon::setTypes(Type type, Type optional)
   this->types_[1] = optional;
 }
 
-void	Pokemon::setEggGroups(const std::string &eggG, const std::string &opt)
+void	Pokemon::setEggGroups(const QString &eggG, const QString &opt)
 {
   this->eggGroups_[0] = eggG;
   this->eggGroups_[1] = opt;

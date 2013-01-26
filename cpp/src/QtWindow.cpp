@@ -5,12 +5,13 @@
 // Login   <baron_a@epitech.net>
 //
 // Started on  Sat Jan 19 22:20:14 2013 Alexandre Baron
-// Last update Tue Jan 22 00:10:36 2013 Alexandre Baron
+// Last update Sat Jan 26 02:42:17 2013 Alexandre Baron
 //
 
 #include <sstream>
 #include <iostream>
 
+#include <QMessageBox>
 #include <QButtonGroup>
 
 #include "QtWindow.hh"
@@ -23,6 +24,8 @@ QtWindow::QtWindow()
   this->initialize();
 }
 
+// Atm, buttonID is attributed by the QButtonGroup of the home menu widget.
+// see QtWindow::initializeHomeMenu().
 void	QtWindow::manageButtonClicks(int buttonID)
 {
   this->homeMenu_->setVisible(false);
@@ -33,6 +36,7 @@ void	QtWindow::manageButtonClicks(int buttonID)
   else if (buttonID == 1)
     {
       this->pokemonList_->setVisible(true);
+      this->displayPokemonsList();
     }
   else
     {
@@ -71,16 +75,37 @@ void	QtWindow::makeButtonTransparent(QPushButton *button) {
   button->setFlat(true);
 }
 
+void	QtWindow::displayPokemonsList()
+{
+  std::map<QString, Pokemon*>	pkmnList = this->database_->getPokemonsList();
+  std::map<QString, Pokemon*>::iterator it;
+
+  for (it = pkmnList.begin(); it != pkmnList.end(); ++it)
+    {
+      QListWidgetItem	*pkmnItem = new QListWidgetItem((it->second)->getMiniature(), (it->second)->getName());
+
+      this->pokemonList_->insertItem(((it->second)->getId().toInt()) - 1, pkmnItem);
+    }
+  this->pokemonList_->setCurrentRow(0);
+}
+
+void	QtWindow::initializePkmnList()
+{
+  this->pokemonList_ = new QListWidget(this);
+  this->pokemonList_->setFont(this->pokeFont_);
+  this->pokemonList_->setGeometry(72, 170, 225, 138);
+  this->pokemonList_->setStyleSheet("border: none;");
+}
+
+
 void	QtWindow::initializeDatabase()
 {
   this->database_ = new PokeDatabase();
   if (this->database_->parseSkillsFile() < 0 || this->database_->parsePokemonsFile() < 0)
     {
+      QMessageBox::critical(NULL, "Pokedex", "Error ! Unable to load XML file, or invalid XML file. Exiting.", QMessageBox::Ok);
       this->criticalError_ = true;
     }
-  else {
-    std::cout << "OOK" << std::endl;
-  }
 
 
 }
@@ -129,6 +154,7 @@ void	QtWindow::initializeHomeMenu()
 void	QtWindow::initializePokeFont()
 {
   this->pokeFont_.setFamily("Pokemon GB");
+  this->pokeFont_.setPixelSize(12);
   if (this->pokeFont_.family() != "Pokemon GB")
     {
       int	fontID;
@@ -163,15 +189,7 @@ void	QtWindow::initialize()
 
   this->initializeHomeMenu();
   this->initializeDatabase();
-
-  this->pokemonList_ = new QListWidget(this);
-  this->pokemonList_->setFont(this->pokeFont_);
-  this->pokemonList_->setGeometry(72, 170, 225, 138);
-  this->pokemonList_->setStyleSheet("border: none;");
-  for (int i = 0; i < 10 ; i++) {
-    QListWidgetItem	*prouet = new QListWidgetItem(QObject::tr("wesh"), this->pokemonList_);
-  }
-  this->pokemonList_->setCurrentRow(9);
+  this->initializePkmnList();
 
   this->pokemonArena_ = new QWidget(this);
   this->pokemonSearchForm_ = new QWidget(this);
