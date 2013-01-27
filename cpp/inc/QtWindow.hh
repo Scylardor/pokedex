@@ -5,7 +5,7 @@
 // Login   <baron_a@epitech.net>
 //
 // Started on  Sat Jan 19 21:54:06 2013 Alexandre Baron
-// Last update Sat Jan 26 02:34:18 2013 Alexandre Baron
+// Last update Sun Jan 27 00:39:52 2013 Alexandre Baron
 //
 
 #ifndef	QTWINDOW_HH_
@@ -13,11 +13,14 @@
 
 # include <QtGui>
 
-#include "PokeDatabase.hh"
+# include "PokeDatabase.hh"
+# include "PokemonView.hh"
+
 
 # define	POKEDEX_OFF_IMG	"/home/baron_a/Projects/pokemon/resources/Images/PokedexOff.png"
 # define	POKEDEX_ON_IMG	"/home/baron_a/Projects/pokemon/resources/Images/PokedexOn.png"
 # define	ON_BUTTON_IMG	"/home/baron_a/Projects/pokemon/resources/Images/boutonON.png"
+# define	DUMMY_IMG	"/home/baron_a/Projects/pokemon/resources/Images/Pokemons/3.png"
 
 class	QtWindow : public QMainWindow
 {
@@ -29,6 +32,7 @@ class	QtWindow : public QMainWindow
   QWidget	*pokemonSearchForm_;
   QWidget	*pokemonArena_;
   QListWidget	*pokemonList_;
+  PokemonView	*pokemonInfos_;
 
   PokeDatabase	*database_;
 
@@ -53,13 +57,16 @@ private:
   void	initializeHomeMenu();
   void	initializeDatabase();
   void	initializePkmnList();
+  void	initializePkmnInfos();
 
   void	hideEverything();
   void	displayPokemonsList();
+  void	setViewOfPokemon(const Pokemon *);
 
 private slots:
   void	toggleOnOff();
   void	manageButtonClicks(int);
+  void	showPkmnInfos(QListWidgetItem *pkmn);
 };
 
 #endif

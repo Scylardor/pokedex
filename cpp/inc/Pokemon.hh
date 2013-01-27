@@ -5,7 +5,7 @@
 // Login   <baron_a@epitech.net>
 //
 // Started on  Mon Jan 21 19:16:08 2013 Alexandre Baron
-// Last update Sat Jan 26 02:37:12 2013 Alexandre Baron
+// Last update Sun Jan 27 01:53:34 2013 Alexandre Baron
 //
 
 #ifndef	POKEMON_HH_
@@ -65,7 +65,7 @@ class	Pokemon
   QString	description_;
   std::vector<Move *>	moves_;
   std::vector<t_evolution *>	evolutions_;
-  QIcon		picture_;
+  QImage	picture_;
   QIcon		miniature_;
 
 public:
@@ -80,6 +80,7 @@ public:
   void	setStats(const std::map<QString, unsigned int> &stats) {this->stats_ = stats; }
   void	setStat(const QString &stat, unsigned int value) { this->stats_[stat] = value; }
   void	setTypes(Type type, Type optional = NONE);
+  void	setTypeByIndex(int index, Type type) { this->types_[index] = type; }
   void	setRatios(const QString &male, const QString &female);
   void	setHeight(const QString &height) { this->height_ = height; }
   void	setWeight(const QString &weight) { this->weight_ = weight; }
@@ -87,7 +88,7 @@ public:
   void	setDescription(const QString &desc) { this->description_ = desc; }
   void	setMoves(const std::vector<Move*> &moves);
   void	setEvolutions(const std::vector<t_evolution *> &evols);
-  void	setImage(const QString &filename) { this->picture_.addFile(filename); }
+  void	setImage(const QString &filename) { this->picture_.load(filename); }
   void	setMiniature(const QString &filename) { this->miniature_.addFile(filename); }
 
   QString	getId() const { return this->id_; }
@@ -104,7 +105,7 @@ public:
   QString	getDescription() const { return this->description_; }
   QString	getMoves() const;
   QString	getEvolutions() const;
-  QIcon		getPicture() const { return this->picture_; }
+  QImage	getPicture() const { return this->picture_; }
   QIcon		getMiniature() const { return this->miniature_; }
 };
 

@@ -5,7 +5,7 @@
 // Login   <baron_a@epitech.net>
 //
 // Started on  Sat Jan 19 22:20:14 2013 Alexandre Baron
-// Last update Sat Jan 26 02:42:17 2013 Alexandre Baron
+// Last update Sun Jan 27 02:08:59 2013 Alexandre Baron
 //
 
 #include <sstream>
@@ -53,6 +53,7 @@ void	QtWindow::hideEverything()
   this->pokemonList_->setVisible(false);
   this->pokemonArena_->setVisible(false);
   this->pokemonSearchForm_->setVisible(false);
+  this->pokemonInfos_->setVisible(false);
 }
 
 void	QtWindow::toggleOnOff()
@@ -75,6 +76,21 @@ void	QtWindow::makeButtonTransparent(QPushButton *button) {
   button->setFlat(true);
 }
 
+void	QtWindow::showPkmnInfos(QListWidgetItem *pkmn)
+{
+  Pokemon	*matching;
+
+  matching = this->database_->getPokemon((pkmn->text().split(" "))[0]);
+  this->pokemonInfos_->setViewOfPokemon(matching);
+  this->pokemonInfos_->setFirstTypeImage(this->database_->getTypeImage(matching->getTypeByIndex(0)));
+  if (matching->getTypeByIndex(1) != NONE)
+    {
+      this->pokemonInfos_->setSecondTypeImage(this->database_->getTypeImage(matching->getTypeByIndex(1)));
+    }
+  this->pokemonList_->setVisible(false);
+  this->pokemonInfos_->setVisible(true);
+}
+
 void	QtWindow::displayPokemonsList()
 {
   std::map<QString, Pokemon*>	pkmnList = this->database_->getPokemonsList();
@@ -82,7 +98,7 @@ void	QtWindow::displayPokemonsList()
 
   for (it = pkmnList.begin(); it != pkmnList.end(); ++it)
     {
-      QListWidgetItem	*pkmnItem = new QListWidgetItem((it->second)->getMiniature(), (it->second)->getName());
+      QListWidgetItem	*pkmnItem = new QListWidgetItem((it->second)->getMiniature(), (it->second)->getId() + " " + (it->second)->getName());
 
       this->pokemonList_->insertItem(((it->second)->getId().toInt()) - 1, pkmnItem);
     }
@@ -95,6 +111,7 @@ void	QtWindow::initializePkmnList()
   this->pokemonList_->setFont(this->pokeFont_);
   this->pokemonList_->setGeometry(72, 170, 225, 138);
   this->pokemonList_->setStyleSheet("border: none;");
+  connect(this->pokemonList_, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(showPkmnInfos(QListWidgetItem*)));
 }
 
 
@@ -106,8 +123,14 @@ void	QtWindow::initializeDatabase()
       QMessageBox::critical(NULL, "Pokedex", "Error ! Unable to load XML file, or invalid XML file. Exiting.", QMessageBox::Ok);
       this->criticalError_ = true;
     }
+}
 
 
+void	QtWindow::initializePkmnInfos()
+{
+  this->pokemonInfos_ = new PokemonView(this->pokeFont_, this);
+  this->pokemonInfos_->setGeometry(55, 150, 260, 175);
+  this->pokemonInfos_->setFont(this->pokeFont_);
 }
 
 void	QtWindow::initializeHomeMenu()
@@ -190,6 +213,7 @@ void	QtWindow::initialize()
   this->initializeHomeMenu();
   this->initializeDatabase();
   this->initializePkmnList();
+  this->initializePkmnInfos();
 
   this->pokemonArena_ = new QWidget(this);
   this->pokemonSearchForm_ = new QWidget(this);
