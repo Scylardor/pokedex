@@ -5,7 +5,7 @@
 // Login   <baron_a@epitech.net>
 //
 // Started on  Mon Jan 21 21:33:35 2013 Alexandre Baron
-// Last update Sun Jan 27 02:02:39 2013 Alexandre Baron
+// Last update Sat Feb  2 01:06:36 2013 Alexandre Baron
 //
 
 #include <iostream>
@@ -50,7 +50,7 @@ void	PokeDatabase::initializeTypes()
   this->typesMatch_["Psychic"]  = PSYCHIC;
   this->typesMatch_["Ghost"]    = GHOST;
   this->typesMatch_["Steel"]    = STEEL;
-  this->typesMatch_["Dark"]	    = DARK;
+  this->typesMatch_["Dark"]     = DARK;
 
   std::map<QString, Type>::iterator it;
 

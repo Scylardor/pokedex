@@ -5,7 +5,7 @@
 // Login   <baron_a@epitech.net>
 //
 // Started on  Sat Jan 19 21:54:06 2013 Alexandre Baron
-// Last update Sun Jan 27 00:39:52 2013 Alexandre Baron
+// Last update Sat Feb  2 01:35:21 2013 Alexandre Baron
 //
 
 #ifndef	QTWINDOW_HH_
@@ -17,10 +17,10 @@
 # include "PokemonView.hh"
 
 
-# define	POKEDEX_OFF_IMG	"/home/baron_a/Projects/pokemon/resources/Images/PokedexOff.png"
-# define	POKEDEX_ON_IMG	"/home/baron_a/Projects/pokemon/resources/Images/PokedexOn.png"
-# define	ON_BUTTON_IMG	"/home/baron_a/Projects/pokemon/resources/Images/boutonON.png"
-# define	DUMMY_IMG	"/home/baron_a/Projects/pokemon/resources/Images/Pokemons/3.png"
+# define	POKEDEX_OFF_IMG	":/PokedexOff.png"
+# define	POKEDEX_ON_IMG	":/PokedexOn.png"
+# define	ON_BUTTON_IMG	":/boutonON.png"
+# define	DUMMY_IMG	"/Pokemons/3.png"
 
 class	QtWindow : public QMainWindow
 {

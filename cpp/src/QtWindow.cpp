@@ -5,7 +5,7 @@
 // Login   <baron_a@epitech.net>
 //
 // Started on  Sat Jan 19 22:20:14 2013 Alexandre Baron
-// Last update Sun Jan 27 02:08:59 2013 Alexandre Baron
+// Last update Sun Jan 27 02:14:34 2013 Alexandre Baron
 //
 
 #include <sstream>
@@ -16,7 +16,7 @@
 
 #include "QtWindow.hh"
 
-using namespace std;
+//using namespace std;
 
 QtWindow::QtWindow()
   : QMainWindow()

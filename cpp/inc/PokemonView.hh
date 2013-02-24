@@ -5,7 +5,7 @@
 // Login   <baron_a@epitech.net>
 //
 // Started on  Sat Jan 26 22:42:37 2013 Alexandre Baron
-// Last update Sun Jan 27 02:06:21 2013 Alexandre Baron
+// Last update Sun Jan 27 21:46:47 2013 Alexandre Baron
 //
 
 #ifndef	POKEMONVIEW_HH_
