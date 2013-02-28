@@ -5,7 +5,7 @@
 // Login   <baron_a@epitech.net>
 //
 // Started on  Mon Jan 21 19:16:08 2013 Alexandre Baron
-// Last update Sun Jan 27 01:53:34 2013 Alexandre Baron
+// Last update Thu Feb 28 23:19:02 2013 Alexandre Baron
 //
 
 #ifndef	POKEMON_HH_
@@ -69,7 +69,7 @@ class	Pokemon
   QIcon		miniature_;
 
 public:
-  Pokemon() {}
+  Pokemon();
   ~Pokemon() {}
 
   void	setId(const QString &id) { this->id_ = id; }
@@ -109,6 +109,6 @@ public:
   QIcon		getMiniature() const { return this->miniature_; }
 };
 
-	typedef	void	(Pokemon::*PkmnSetter)(const QString &);
+typedef	void	(Pokemon::*PkmnSetter)(const QString &);
 
 #endif

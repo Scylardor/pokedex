@@ -5,7 +5,7 @@
 // Login   <baron_a@epitech.net>
 //
 // Started on  Mon Jan 21 21:33:35 2013 Alexandre Baron
-// Last update Sat Feb  2 01:06:36 2013 Alexandre Baron
+// Last update Thu Feb 28 23:17:12 2013 Alexandre Baron
 //
 
 #include <iostream>
@@ -142,6 +142,7 @@ void	PokeDatabase::addPokemonFromData(QDomElement &XMLPkmn)
   QString	trueID("");
   int	id = origID.toInt();
 
+  // Creating the Pokemon "real" ID and forge the Pokemon's picture name with it
   newPkmn->setImage(picturePath + "Pokemons/" + origID + ".png");
   if (id < 10)
     {
@@ -159,6 +160,7 @@ void	PokeDatabase::addPokemonFromData(QDomElement &XMLPkmn)
   picturePath += trueID + ".gif";
   newPkmn->setMiniature(picturePath);
 
+  // Retrieving the types of the Pokemon
   QString	typeName;
   QDomNode	type = XMLPkmn.firstChildElement("type");
   int i = 0;

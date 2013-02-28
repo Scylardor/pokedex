@@ -5,7 +5,7 @@
 // Login   <baron_a@epitech.net>
 //
 // Started on  Sat Jan 19 22:20:14 2013 Alexandre Baron
-// Last update Sun Jan 27 02:14:34 2013 Alexandre Baron
+// Last update Thu Feb 28 23:13:59 2013 Alexandre Baron
 //
 
 #include <sstream>
@@ -76,17 +76,25 @@ void	QtWindow::makeButtonTransparent(QPushButton *button) {
   button->setFlat(true);
 }
 
+// Function called when a pokemon is selected in the pokemon database.
+// It will ask the database about this Pokemon informations, and correctly put them
+// on the screen.
 void	QtWindow::showPkmnInfos(QListWidgetItem *pkmn)
 {
   Pokemon	*matching;
 
   matching = this->database_->getPokemon((pkmn->text().split(" "))[0]);
+  qDebug() << "kikou";
   this->pokemonInfos_->setViewOfPokemon(matching);
+  qDebug() << "lol";
   this->pokemonInfos_->setFirstTypeImage(this->database_->getTypeImage(matching->getTypeByIndex(0)));
+  qDebug() << "lol1";
   if (matching->getTypeByIndex(1) != NONE)
     {
+      qDebug() << matching->getTypeByIndex(1);
       this->pokemonInfos_->setSecondTypeImage(this->database_->getTypeImage(matching->getTypeByIndex(1)));
     }
+  qDebug() << "lol3";
   this->pokemonList_->setVisible(false);
   this->pokemonInfos_->setVisible(true);
 }
