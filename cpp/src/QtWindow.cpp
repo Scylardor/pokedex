@@ -5,7 +5,7 @@
 // Login   <baron_a@epitech.net>
 //
 // Started on  Sat Jan 19 22:20:14 2013 Alexandre Baron
-// Last update Thu Feb 28 23:13:59 2013 Alexandre Baron
+// Last update Thu Feb 28 23:25:54 2013 Alexandre Baron
 //
 
 #include <sstream>
@@ -42,8 +42,6 @@ void	QtWindow::manageButtonClicks(int buttonID)
     {
       //      this->pokemonArena_->setVisible(true);
     }
-  std::cout << "Button " << buttonID << " has been clicked" << std::endl;
-
 }
 
 // When pressing the Start button when the Pokedex is On makes everything stop
@@ -84,17 +82,12 @@ void	QtWindow::showPkmnInfos(QListWidgetItem *pkmn)
   Pokemon	*matching;
 
   matching = this->database_->getPokemon((pkmn->text().split(" "))[0]);
-  qDebug() << "kikou";
   this->pokemonInfos_->setViewOfPokemon(matching);
-  qDebug() << "lol";
   this->pokemonInfos_->setFirstTypeImage(this->database_->getTypeImage(matching->getTypeByIndex(0)));
-  qDebug() << "lol1";
   if (matching->getTypeByIndex(1) != NONE)
     {
-      qDebug() << matching->getTypeByIndex(1);
       this->pokemonInfos_->setSecondTypeImage(this->database_->getTypeImage(matching->getTypeByIndex(1)));
     }
-  qDebug() << "lol3";
   this->pokemonList_->setVisible(false);
   this->pokemonInfos_->setVisible(true);
 }
