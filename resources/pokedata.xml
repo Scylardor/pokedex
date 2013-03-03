@@ -32457,7 +32457,7 @@
     </moves>
   </pokemon>
   <pokemon id='122'>
-    <name>MR</name>
+    <name>MR. MIME</name>
     <type>Psychic</type>
     <ability>Soundproof</ability>
     <exp>1000000</exp>
@@ -32474,7 +32474,7 @@
         <name>Mime</name>
       </evolution>
       <evolution id='122'>
-        <name>Mr</name>
+        <name>Mr. Mime</name>
       </evolution>
     </evolutions>
     <egg-group>Human</egg-group>
@@ -51672,7 +51672,7 @@
     </moves>
   </pokemon>
   <pokemon id='250'>
-    <name>HO</name>
+    <name>HO-OH</name>
     <type>Fire</type>
     <type>Flying</type>
     <ability>Pressure</ability>
@@ -51687,7 +51687,7 @@
     </stats>
     <evolutions>
       <evolution id='250'>
-        <name>Ho</name>
+        <name>Ho-Oh</name>
       </evolution>
     </evolutions>
     <species>Rainbow Pokemon</species>

@@ -5,7 +5,7 @@
 // Login   <baron_a@epitech.net>
 //
 // Started on  Sat Jan 19 22:20:14 2013 Alexandre Baron
-// Last update Thu Feb 28 23:25:54 2013 Alexandre Baron
+// Last update Sun Mar  3 16:36:10 2013 Alexandre Baron
 //
 
 #include <sstream>
@@ -15,8 +15,7 @@
 #include <QButtonGroup>
 
 #include "QtWindow.hh"
-
-//using namespace std;
+#include "makeButtonTransparent.hh"
 
 QtWindow::QtWindow()
   : QMainWindow()
@@ -24,19 +23,27 @@ QtWindow::QtWindow()
   this->initialize();
 }
 
+QtWindow::~QtWindow()
+{
+  delete this->mainScreen_;
+  delete this->secondScreen_;
+  delete this->onOffButton_;
+  delete this->database_;
+}
+
 // Atm, buttonID is attributed by the QButtonGroup of the home menu widget.
 // see QtWindow::initializeHomeMenu().
 void	QtWindow::manageButtonClicks(int buttonID)
 {
-  this->homeMenu_->setVisible(false);
+  this->mainScreen_->toggleVisibility(HOME_MENU, false);
   if (buttonID == 0)
     {
       //      this->searchPokemonForm_->setVisible(true);
     }
   else if (buttonID == 1)
     {
-      this->pokemonList_->setVisible(true);
-      this->displayPokemonsList();
+      this->mainScreen_->resetPokemonList();
+      this->mainScreen_->toggleVisibility(POKEMON_LIST, true);
     }
   else
     {
@@ -47,11 +54,10 @@ void	QtWindow::manageButtonClicks(int buttonID)
 // When pressing the Start button when the Pokedex is On makes everything stop
 void	QtWindow::hideEverything()
 {
-  this->homeMenu_->setVisible(false);
-  this->pokemonList_->setVisible(false);
-  this->pokemonArena_->setVisible(false);
-  this->pokemonSearchForm_->setVisible(false);
-  this->pokemonInfos_->setVisible(false);
+  this->mainScreen_->setVisible(false);
+  this->mainScreen_->toggleVisibility(POKEMON_LIST, false);
+  this->mainScreen_->toggleVisibility(POKEMON_DESC, false);
+  this->secondScreen_->setVisible(false);
 }
 
 void	QtWindow::toggleOnOff()
@@ -64,57 +70,51 @@ void	QtWindow::toggleOnOff()
   else
     {
       this->setBackgroundImage(POKEDEX_ON_IMG);
-      this->homeMenu_->setVisible(true);
+      this->mainScreen_->setVisible(true);
+      this->mainScreen_->toggleVisibility(HOME_MENU, true);
     }
   this->OnOff_ = !this->OnOff_;
 }
 
-void	QtWindow::makeButtonTransparent(QPushButton *button) {
-  button->setFocusPolicy(Qt::NoFocus);
-  button->setFlat(true);
+void	QtWindow::showTheList()
+{
+  if (this->OnOff_ == true)
+    {
+      this->mainScreen_->toggleVisibility(HOME_MENU, false);
+      this->mainScreen_->toggleVisibility(POKEMON_DESC, false);
+      this->mainScreen_->toggleVisibility(POKEMON_LIST, true);
+      this->secondScreen_->clear();
+    }
+}
+
+void	QtWindow::showPokemonInfos(const Pokemon *pkmn)
+{
+  QImage	*firstTypeImg;
+  QImage	*secTypeImg = NULL;
+
+  firstTypeImg = this->database_->getTypeImage(pkmn->getTypeByIndex(0));
+  if (pkmn->getTypeByIndex(1) != NONE)
+    {
+      secTypeImg = this->database_->getTypeImage(pkmn->getTypeByIndex(1));
+    }
+  this->mainScreen_->showPokemon(pkmn, firstTypeImg, secTypeImg);
+  this->secondScreen_->setVisible(true);
+  this->secondScreen_->showPokemonDesc(pkmn);
 }
 
 // Function called when a pokemon is selected in the pokemon database.
-// It will ask the database about this Pokemon informations, and correctly put them
-// on the screen.
-void	QtWindow::showPkmnInfos(QListWidgetItem *pkmn)
+// It will ask the database about this Pokemon informations, and correctly put
+// them on the screen via the showPokemonInfos function.
+void	QtWindow::retrievePokemon(QListWidgetItem *pkmn)
 {
   Pokemon	*matching;
 
   matching = this->database_->getPokemon((pkmn->text().split(" "))[0]);
-  this->pokemonInfos_->setViewOfPokemon(matching);
-  this->pokemonInfos_->setFirstTypeImage(this->database_->getTypeImage(matching->getTypeByIndex(0)));
-  if (matching->getTypeByIndex(1) != NONE)
+  if (matching != NULL)
     {
-      this->pokemonInfos_->setSecondTypeImage(this->database_->getTypeImage(matching->getTypeByIndex(1)));
+      showPokemonInfos(matching);
     }
-  this->pokemonList_->setVisible(false);
-  this->pokemonInfos_->setVisible(true);
 }
-
-void	QtWindow::displayPokemonsList()
-{
-  std::map<QString, Pokemon*>	pkmnList = this->database_->getPokemonsList();
-  std::map<QString, Pokemon*>::iterator it;
-
-  for (it = pkmnList.begin(); it != pkmnList.end(); ++it)
-    {
-      QListWidgetItem	*pkmnItem = new QListWidgetItem((it->second)->getMiniature(), (it->second)->getId() + " " + (it->second)->getName());
-
-      this->pokemonList_->insertItem(((it->second)->getId().toInt()) - 1, pkmnItem);
-    }
-  this->pokemonList_->setCurrentRow(0);
-}
-
-void	QtWindow::initializePkmnList()
-{
-  this->pokemonList_ = new QListWidget(this);
-  this->pokemonList_->setFont(this->pokeFont_);
-  this->pokemonList_->setGeometry(72, 170, 225, 138);
-  this->pokemonList_->setStyleSheet("border: none;");
-  connect(this->pokemonList_, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(showPkmnInfos(QListWidgetItem*)));
-}
-
 
 void	QtWindow::initializeDatabase()
 {
@@ -126,52 +126,32 @@ void	QtWindow::initializeDatabase()
     }
 }
 
-
-void	QtWindow::initializePkmnInfos()
+// Initializing the main screen widget and all of its components.
+// That's why we, for now, initialize the Pokemon list once and for all here
+// instead of re-filling it each time we access to it.
+// It may change in an indetermined future.
+void	QtWindow::initializeMainScreen()
 {
-  this->pokemonInfos_ = new PokemonView(this->pokeFont_, this);
-  this->pokemonInfos_->setGeometry(55, 150, 260, 175);
-  this->pokemonInfos_->setFont(this->pokeFont_);
+  std::map<QString, Pokemon*>	pkmnList = this->database_->getPokemonsList();
+  std::map<QString, Pokemon*>::iterator it;
+
+  this->mainScreen_ = new PkdexMainScreen(this->pokeFont_, this);
+  this->mainScreen_->setGeometry(55, 150, 260, 175);
+
+  for (it = pkmnList.begin(); it != pkmnList.end(); ++it)
+    {
+      QListWidgetItem	*pkmnItem = new QListWidgetItem((it->second)->getMiniature(), (it->second)->getId() + " " + (it->second)->getName());
+
+      this->mainScreen_->addToPokemonList(((it->second)->getId().toInt()) - 1, pkmnItem);
+    }
 }
 
-void	QtWindow::initializeHomeMenu()
+void	QtWindow::initializeSecondScreen()
 {
-  QButtonGroup	*group;
-  QPushButton	*searchPokemonButton;
-  QPushButton	*pokemonListButton;
-  QPushButton	*pokemonBattleButton;
-  std::stringstream	styleStream;
-
-  this->homeMenu_ = new QWidget(this);
-  searchPokemonButton = new QPushButton("SEARCH A POKEMON", this->homeMenu_);
-  pokemonListButton = new QPushButton("POKEMON DATABASE", this->homeMenu_);
-  pokemonBattleButton = new QPushButton("BATTLE SIMULATION", this->homeMenu_);
-  group = new QButtonGroup(this->homeMenu_);
-
-  this->homeMenu_->setGeometry(55, 150, 260, 175);
-  searchPokemonButton->setGeometry(20, 30, 220, 30);
-  pokemonListButton->setGeometry(20, 75, 220, 30);
-  pokemonBattleButton->setGeometry(20, 120, 220, 30);
-
-  makeButtonTransparent(searchPokemonButton);
-  makeButtonTransparent(pokemonListButton);
-  makeButtonTransparent(pokemonBattleButton);
-
-  styleStream << "text-align: left;font-size: 11px";
-  searchPokemonButton->setStyleSheet(styleStream.str().c_str());
-  pokemonListButton->setStyleSheet(styleStream.str().c_str());
-  pokemonBattleButton->setStyleSheet(styleStream.str().c_str());
-
-  searchPokemonButton->setFont(this->pokeFont_);
-  pokemonListButton->setFont(this->pokeFont_);
-  pokemonBattleButton->setFont(this->pokeFont_);
-
-  group->addButton(searchPokemonButton, 0);
-  group->addButton(pokemonListButton, 1);
-  group->addButton(pokemonBattleButton, 2);
-
-  connect(group, SIGNAL(buttonClicked(int)), this, SLOT(manageButtonClicks(int)));
+  this->secondScreen_ = new PkdexSecondScreen(this->pokeFont_, this);
+  this->secondScreen_->setGeometry(448, 160, 240, 115);
 }
+
 
 // Pokemon GB.ttf font is a free software for any purpose, made by Jackster Productions
 // http://www.fontspace.com/jackster-productions/pokemon-gb
@@ -206,19 +186,29 @@ void	QtWindow::initialize()
 
   this->onOffButton_ = new QPushButton("START", this);
   this->onOffButton_->setGeometry(448, 446, 120, 62);
-  this->makeButtonTransparent(this->onOffButton_);
+  makeButtonTransparent(this->onOffButton_);
   styleStream << "background-image: url("<< ON_BUTTON_IMG << ");" << "font: bold 12px;";
   this->onOffButton_->setStyleSheet(styleStream.str().c_str());
   connect(this->onOffButton_, SIGNAL(clicked()), this, SLOT(toggleOnOff()));
 
-  this->initializeHomeMenu();
+  this->listButton_ = new QPushButton("LIST", this);
+  this->listButton_->setGeometry(470, 287, 35, 25);
+  makeButtonTransparent(this->listButton_);
+  QPalette newPalette = palette();
+  newPalette.setBrush(QPalette::Window, QBrush(Qt::transparent));
+  this->listButton_->setPalette(newPalette);
+  this->listButton_->setBackgroundRole(QPalette::Window);
+  styleStream.str("");
+  styleStream << "font: bold italic 10px;";
+  this->listButton_->setStyleSheet(styleStream.str().c_str());
+  connect(this->listButton_, SIGNAL(clicked()), this, SLOT(showTheList()));
+
   this->initializeDatabase();
-  this->initializePkmnList();
-  this->initializePkmnInfos();
+  this->initializeMainScreen();
+  this->initializeSecondScreen();
 
-  this->pokemonArena_ = new QWidget(this);
-  this->pokemonSearchForm_ = new QWidget(this);
-
+  // this->pokemonArena_ = new QWidget(this);
+  // this->pokemonSearchForm_ = new QWidget(this);
 
   this->hideEverything();
 }

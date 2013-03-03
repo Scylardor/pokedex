@@ -5,7 +5,7 @@
 // Login   <baron_a@epitech.net>
 //
 // Started on  Mon Jan 21 19:14:28 2013 Alexandre Baron
-// Last update Sat Feb  2 01:34:46 2013 Alexandre Baron
+// Last update Sat Mar  2 00:11:51 2013 Alexandre Baron
 //
 
 #ifndef	POKEDATABASE_HH_
@@ -13,14 +13,14 @@
 
 # include <vector>
 
-#include <QtXml>
+# include <QtXml>
 
 # include "Pokemon.hh"
 # include "Skill.hh"
 
 # define	SKILLS_XML_FILE	":/Mdata.xml"
 # define	PKMN_XML_FILE	":/pokedata.xml"
-# define	IMAGES_DIR	"/home/baron_a/Projects/pokemon/resources/Images/"
+//# define	IMAGES_DIR	"/home/baron_a/Projects/pokemon/resources/Images/"
 
 class	PokeDatabase
 {

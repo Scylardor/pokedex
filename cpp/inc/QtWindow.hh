@@ -5,7 +5,7 @@
 // Login   <baron_a@epitech.net>
 //
 // Started on  Sat Jan 19 21:54:06 2013 Alexandre Baron
-// Last update Sat Feb  2 01:35:21 2013 Alexandre Baron
+// Last update Sun Mar  3 16:34:05 2013 Alexandre Baron
 //
 
 #ifndef	QTWINDOW_HH_
@@ -13,26 +13,25 @@
 
 # include <QtGui>
 
+# include "PkdexMainScreen.hh"
+# include "PkdexSecondScreen.hh"
 # include "PokeDatabase.hh"
-# include "PokemonView.hh"
-
 
 # define	POKEDEX_OFF_IMG	":/PokedexOff.png"
 # define	POKEDEX_ON_IMG	":/PokedexOn.png"
 # define	ON_BUTTON_IMG	":/boutonON.png"
-# define	DUMMY_IMG	"/Pokemons/3.png"
+# define	LEFT_UP_BUTTON_IMG	":/left_up_corner_button.png"
+//# define	DUMMY_IMG	"/Pokemons/3.png"
 
 class	QtWindow : public QMainWindow
 {
   Q_OBJECT
 
   // Widgets and objects of all kinds
+  PkdexMainScreen	*mainScreen_;
+  PkdexSecondScreen	*secondScreen_;
   QPushButton	*onOffButton_;
-  QWidget	*homeMenu_;
-  QWidget	*pokemonSearchForm_;
-  QWidget	*pokemonArena_;
-  QListWidget	*pokemonList_;
-  PokemonView	*pokemonInfos_;
+  QPushButton	*listButton_;
 
   PokeDatabase	*database_;
 
@@ -43,30 +42,30 @@ class	QtWindow : public QMainWindow
 
 public:
   QtWindow();
-  ~QtWindow() {}
+  ~QtWindow();
 
   void	setBackgroundImage(const char *filename);
   void	blockResize(size_t width, size_t height);
   bool	getCriticalError() const { return this->criticalError_; }
 
 private:
-  void	makeButtonTransparent(QPushButton *);
-
   void	initialize();
-  void	initializePokeFont();
-  void	initializeHomeMenu();
   void	initializeDatabase();
-  void	initializePkmnList();
-  void	initializePkmnInfos();
+  void	initializePokeFont();
+  void	initializeMainScreen();
+  void	initializeSecondScreen();
+
+  void	showPokemonInfos(const Pokemon *pkmn);
 
   void	hideEverything();
-  void	displayPokemonsList();
-  void	setViewOfPokemon(const Pokemon *);
 
 private slots:
   void	toggleOnOff();
   void	manageButtonClicks(int);
-  void	showPkmnInfos(QListWidgetItem *pkmn);
+  void	retrievePokemon(QListWidgetItem *pkmn);
+  void	showTheList();
 };
+
+void	makeButtonTransparent(QPushButton *);
 
 #endif

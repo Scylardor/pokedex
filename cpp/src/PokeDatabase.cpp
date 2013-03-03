@@ -5,10 +5,8 @@
 // Login   <baron_a@epitech.net>
 //
 // Started on  Mon Jan 21 21:33:35 2013 Alexandre Baron
-// Last update Thu Feb 28 23:17:12 2013 Alexandre Baron
+// Last update Sat Mar  2 00:12:29 2013 Alexandre Baron
 //
-
-#include <iostream>
 
 #include "PokeDatabase.hh"
 
@@ -31,7 +29,7 @@ PokeDatabase::~PokeDatabase()
 
 void	PokeDatabase::initializeTypes()
 {
-  QString	TypesDir(IMAGES_DIR);
+  QString	TypesDir(":/Types/");
 
   this->typesMatch_["None"]     = NONE;
   this->typesMatch_["Fire"]     = FIRE;
@@ -54,7 +52,6 @@ void	PokeDatabase::initializeTypes()
 
   std::map<QString, Type>::iterator it;
 
-  TypesDir += "Types/";
   for (it = this->typesMatch_.begin(); it != this->typesMatch_.end(); ++it)
     {
       QImage	*typeImage = new QImage(TypesDir + it->first + ".png");
@@ -130,7 +127,7 @@ void	PokeDatabase::addPokemonFromData(QDomElement &XMLPkmn)
 {
   Pokemon	*newPkmn;
   std::map<QString, PkmnSetter>::iterator it;
-  QString	picturePath = IMAGES_DIR;
+  QString	picturePath = ":/Pokemons/";
 
   newPkmn = new Pokemon();
   for (it = this->pkmnSetters_.begin(); it != this->pkmnSetters_.end(); ++it)
@@ -143,7 +140,7 @@ void	PokeDatabase::addPokemonFromData(QDomElement &XMLPkmn)
   int	id = origID.toInt();
 
   // Creating the Pokemon "real" ID and forge the Pokemon's picture name with it
-  newPkmn->setImage(picturePath + "Pokemons/" + origID + ".png");
+  newPkmn->setImage(picturePath + origID + ".png");
   if (id < 10)
     {
       trueID = "00";
@@ -155,8 +152,7 @@ void	PokeDatabase::addPokemonFromData(QDomElement &XMLPkmn)
   trueID += XMLPkmn.attribute("id");
   newPkmn->setId(trueID);
 
-  picturePath = IMAGES_DIR;
-  picturePath += "Miniatures/";
+  picturePath = ":/Miniatures/";
   picturePath += trueID + ".gif";
   newPkmn->setMiniature(picturePath);
 
