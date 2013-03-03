@@ -3,7 +3,7 @@
      <file alias="PokedexOn.png">../resources/Images/PokedexOn.png</file>
      <file alias="PokedexOff.png">../resources/Images/PokedexOff.png</file>
      <file alias="boutonON.png">../resources/Images/boutonON.png</file>
-     <file alias="left_up_corner_button.png">../resources/Images/left_up_corner_button.png</file>
+
      <file alias="Mdata.xml">../resources/Mdata.xml</file>
      <file alias="pokedata.xml">../resources/pokedata.xml</file>
 
