@@ -5,7 +5,7 @@
 // Login   <baron_a@epitech.net>
 //
 // Started on  Sat Jan 19 22:20:14 2013 Alexandre Baron
-// Last update Sun Mar  3 16:36:10 2013 Alexandre Baron
+// Last update Mon Apr 15 14:47:29 2013 Alexandre Baron
 //
 
 #include <sstream>
@@ -87,6 +87,9 @@ void	QtWindow::showTheList()
     }
 }
 
+// Function used to display informations about a certain Pokemon.
+// It will interrogate the database about its infos and then fill it in the right places.
+// On main and second screens
 void	QtWindow::showPokemonInfos(const Pokemon *pkmn)
 {
   QImage	*firstTypeImg;
@@ -100,6 +103,7 @@ void	QtWindow::showPokemonInfos(const Pokemon *pkmn)
   this->mainScreen_->showPokemon(pkmn, firstTypeImg, secTypeImg);
   this->secondScreen_->setVisible(true);
   this->secondScreen_->showPokemonDesc(pkmn);
+  this->currentPkmnId_ = pkmn->getId().toInt();
 }
 
 // Function called when a pokemon is selected in the pokemon database.
@@ -116,6 +120,60 @@ void	QtWindow::retrievePokemon(QListWidgetItem *pkmn)
     }
 }
 
+void	QtWindow::showPrevPokemon()
+{
+  QString	newId("");
+
+  if (this->currentPkmnId_ > 0)
+    {
+      this->currentPkmnId_--;
+      newId = QString::number(this->currentPkmnId_);
+      if (this->currentPkmnId_ < 10)
+	{
+	  newId.prepend("00");
+	}
+      else if (this->currentPkmnId_ >= 10 && this->currentPkmnId_ < 100)
+	{
+	  newId.prepend("0");
+	}
+
+      Pokemon	*matching = this->database_->getPokemon(newId);
+
+      if (matching != NULL)
+	{
+	  showPokemonInfos(matching);
+	}
+    }
+}
+
+void	QtWindow::showNextPokemon()
+{
+  QString	newId("");
+
+  if (this->currentPkmnId_ < 493)
+    {
+      this->currentPkmnId_++;
+      newId = QString::number(this->currentPkmnId_);
+      if (this->currentPkmnId_ < 10)
+	{
+	  newId.prepend("00");
+	}
+      else if (this->currentPkmnId_ >= 10 && this->currentPkmnId_ < 100)
+	{
+	  newId.prepend("0");
+	}
+
+      Pokemon	*matching = this->database_->getPokemon(newId);
+
+      if (matching != NULL)
+	{
+	  showPokemonInfos(matching);
+	}
+    }
+}
+
+// The "Database" is, for the moment, only composed of two XML files : one for the pokemons data and one for the attacks data.
+// If one of these two files cannot be opened or read, this is considered as a critical error (the program cannot work well without it).
 void	QtWindow::initializeDatabase()
 {
   this->database_ = new PokeDatabase();
@@ -175,6 +233,12 @@ void	QtWindow::initializePokeFont()
     }
 }
 
+
+// Main initialization function.
+// Proceeds by steps the multiple components of the window:
+// - the buttons : on/off, blue "LIST" button, prev/next arrows buttons
+// - and then the other "big" components (the database, the main and second screen)
+// Then hide all the widgets to give a "shut down" appearance
 void	QtWindow::initialize()
 {
   std::stringstream	styleStream;
@@ -182,6 +246,7 @@ void	QtWindow::initialize()
   this->criticalError_ = false;
   this->setWindowTitle("Light Pokedex");
   this->OnOff_ = false;
+  this->currentPkmnId_ = 0;
   this->initializePokeFont();
 
   this->onOffButton_ = new QPushButton("START", this);
@@ -194,14 +259,27 @@ void	QtWindow::initialize()
   this->listButton_ = new QPushButton("LIST", this);
   this->listButton_->setGeometry(470, 287, 35, 25);
   makeButtonTransparent(this->listButton_);
-  QPalette newPalette = palette();
-  newPalette.setBrush(QPalette::Window, QBrush(Qt::transparent));
-  this->listButton_->setPalette(newPalette);
-  this->listButton_->setBackgroundRole(QPalette::Window);
   styleStream.str("");
   styleStream << "font: bold italic 10px;";
   this->listButton_->setStyleSheet(styleStream.str().c_str());
   connect(this->listButton_, SIGNAL(clicked()), this, SLOT(showTheList()));
+
+  this->prevButton_ = new QPushButton(this);
+  this->prevButton_->setGeometry(468, 392, 37, 37);
+  makeButtonTransparent(this->prevButton_);
+  // styleStream.str("");
+  // styleStream << "background-image: url("<< LARROW_BUTTON_IMG << ");";
+  // this->prevButton_->setStyleSheet(styleStream.str().c_str());
+  // this->prevButton_->resize(42, 42);
+  connect(this->prevButton_, SIGNAL(clicked()), this, SLOT(showPrevPokemon()));
+
+  this->nextButton_ = new QPushButton(this);
+  this->nextButton_->setGeometry(507, 390, 37, 37);
+  makeButtonTransparent(this->nextButton_);
+  // styleStream.str("");
+  // styleStream << "background-image: url("<< RARROW_BUTTON_IMG << ");";
+  // this->nextButton_->setStyleSheet(styleStream.str().c_str());
+  connect(this->nextButton_, SIGNAL(clicked()), this, SLOT(showNextPokemon()));
 
   this->initializeDatabase();
   this->initializeMainScreen();

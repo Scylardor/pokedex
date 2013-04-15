@@ -5,7 +5,7 @@
 // Login   <baron_a@epitech.net>
 //
 // Started on  Sat Jan 19 21:54:06 2013 Alexandre Baron
-// Last update Sun Mar  3 16:34:05 2013 Alexandre Baron
+// Last update Mon Apr 15 14:18:43 2013 Alexandre Baron
 //
 
 #ifndef	QTWINDOW_HH_
@@ -20,7 +20,8 @@
 # define	POKEDEX_OFF_IMG	":/PokedexOff.png"
 # define	POKEDEX_ON_IMG	":/PokedexOn.png"
 # define	ON_BUTTON_IMG	":/boutonON.png"
-# define	LEFT_UP_BUTTON_IMG	":/left_up_corner_button.png"
+# define	LARROW_BUTTON_IMG	":/leftarrow.png"
+# define	RARROW_BUTTON_IMG	":/rightarrow.png"
 //# define	DUMMY_IMG	"/Pokemons/3.png"
 
 class	QtWindow : public QMainWindow
@@ -32,8 +33,11 @@ class	QtWindow : public QMainWindow
   PkdexSecondScreen	*secondScreen_;
   QPushButton	*onOffButton_;
   QPushButton	*listButton_;
+  QPushButton	*prevButton_;
+  QPushButton	*nextButton_;
 
   PokeDatabase	*database_;
+  int		currentPkmnId_;
 
   // Window class properties
   QFont		pokeFont_;
@@ -64,6 +68,8 @@ private slots:
   void	manageButtonClicks(int);
   void	retrievePokemon(QListWidgetItem *pkmn);
   void	showTheList();
+  void	showPrevPokemon();
+  void	showNextPokemon();
 };
 
 void	makeButtonTransparent(QPushButton *);

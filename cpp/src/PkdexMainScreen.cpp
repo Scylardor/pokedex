@@ -5,7 +5,7 @@
 // Login   <baron_a@epitech.net>
 //
 // Started on  Fri Mar  1 22:16:28 2013 Alexandre Baron
-// Last update Sun Mar  3 16:36:26 2013 Alexandre Baron
+// Last update Sun Mar  3 17:00:08 2013 Alexandre Baron
 //
 
 #include <iostream>
@@ -71,7 +71,7 @@ void	PkdexMainScreen::initializePokemonList(QWidget *parent)
   this->pokemonList_->setFont(this->pokeFont_);
   this->pokemonList_->setGeometry(20, 20, 225, 135);
   this->pokemonList_->setStyleSheet("border: none;");
-  connect(this->pokemonList_, SIGNAL(itemDoubleClicked(QListWidgetItem*)), parent, SLOT(showPkmnInfos(QListWidgetItem*)));
+  connect(this->pokemonList_, SIGNAL(itemDoubleClicked(QListWidgetItem*)), parent, SLOT(retrievePokemon(QListWidgetItem*)));
 }
 
 void	PkdexMainScreen::initializePokemonInfos()
