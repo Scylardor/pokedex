@@ -5,7 +5,7 @@
 // Login   <baron_a@epitech.net>
 //
 // Started on  Sat Jan 19 22:20:14 2013 Alexandre Baron
-// Last update Mon Apr 15 14:47:29 2013 Alexandre Baron
+// Last update Sat Apr 20 14:45:24 2013 Alexandre Baron
 //
 
 #include <sstream>
@@ -259,26 +259,18 @@ void	QtWindow::initialize()
   this->listButton_ = new QPushButton("LIST", this);
   this->listButton_->setGeometry(470, 287, 35, 25);
   makeButtonTransparent(this->listButton_);
-  styleStream.str("");
   styleStream << "font: bold italic 10px;";
-  this->listButton_->setStyleSheet(styleStream.str().c_str());
+  this->listButton_->setStyleSheet("font: bold italic 10px;");
   connect(this->listButton_, SIGNAL(clicked()), this, SLOT(showTheList()));
 
   this->prevButton_ = new QPushButton(this);
   this->prevButton_->setGeometry(468, 392, 37, 37);
   makeButtonTransparent(this->prevButton_);
-  // styleStream.str("");
-  // styleStream << "background-image: url("<< LARROW_BUTTON_IMG << ");";
-  // this->prevButton_->setStyleSheet(styleStream.str().c_str());
-  // this->prevButton_->resize(42, 42);
   connect(this->prevButton_, SIGNAL(clicked()), this, SLOT(showPrevPokemon()));
 
   this->nextButton_ = new QPushButton(this);
   this->nextButton_->setGeometry(507, 390, 37, 37);
   makeButtonTransparent(this->nextButton_);
-  // styleStream.str("");
-  // styleStream << "background-image: url("<< RARROW_BUTTON_IMG << ");";
-  // this->nextButton_->setStyleSheet(styleStream.str().c_str());
   connect(this->nextButton_, SIGNAL(clicked()), this, SLOT(showNextPokemon()));
 
   this->initializeDatabase();

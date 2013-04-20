@@ -7,7 +7,7 @@ FIND_PACKAGE(Qt4 COMPONENTS QtXml QtGui REQUIRED)
 # Defining some useful variables here
 FILE(GLOB PROJECT_SRCS "src/*.cpp")
 FILE(GLOB PROJECT_HEADERS "inc/*.hh")
-SET(pokedex_RCCS pokedex.qrc)
+SET(pokedex_RCCS ../resources/pokedex.qrc)
 
 # For Qt
 QT4_WRAP_CPP(pokedex_HEADERS_MOC ${PROJECT_HEADERS})
